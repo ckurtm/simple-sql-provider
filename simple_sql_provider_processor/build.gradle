@@ -1,0 +1,6 @@
+apply plugin: 'java'
+
+dependencies {
+    compile 'com.squareup:javapoet:1.2.0'
+    compile project(':simple_sql_provider_annotation')
+}

@@ -1,0 +1,1 @@
+include ':demo', ':simple_sql_provider_annotation', ':simple_sql_provider_processor'

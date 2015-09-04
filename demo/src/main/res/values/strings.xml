@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SimpleSQLProvider</string>
+    <string name="authority">ckm.simple.demo.example.provider</string>
+</resources>
