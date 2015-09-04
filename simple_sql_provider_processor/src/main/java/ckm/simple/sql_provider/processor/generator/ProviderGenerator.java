@@ -265,7 +265,7 @@ public class ProviderGenerator {
 
         builder.addStatement("$T db = databaseHelper.getWritableDatabase()", SQLITE_DATABASE)
                 .addStatement("$T finalWhere = null", String.class)
-                .addStatement("$T count", int.class)
+                .addStatement("$T count =0", int.class)
                 .beginControlFlow("switch (matcher.match(uri)) ");
 
 
@@ -307,7 +307,7 @@ public class ProviderGenerator {
 
         builder.addStatement("$T db = databaseHelper.getWritableDatabase()", SQLITE_DATABASE)
                 .addStatement("$T finalWhere = null", String.class)
-                .addStatement("$T count", int.class)
+                .addStatement("$T count = 0", int.class)
                 .beginControlFlow("switch (matcher.match(uri)) ");
 
 
