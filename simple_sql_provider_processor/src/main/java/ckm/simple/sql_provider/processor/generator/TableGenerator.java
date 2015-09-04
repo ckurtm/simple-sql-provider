@@ -127,10 +127,14 @@ public class TableGenerator {
         MethodSpec.Builder builder = MethodSpec.methodBuilder("getContentValues")
                 .addModifiers(PUBLIC, STATIC)
                 .addParameter(table.clazz, "param")
+                .addParameter(boolean.class, "includePrimary")
                 .returns(Helper.CONTENT_VALUES)
                 .addStatement("$T values = new $T()", Helper.CONTENT_VALUES, Helper.CONTENT_VALUES);
         for (Column column : table.columns) {
             String elementType = column.element.asType().toString();
+            if(column.primary){
+                builder.beginControlFlow("if(includePrimary)");
+            }
             if (elementType.equals(Date.class.getCanonicalName())) {
                 builder.addStatement("values.put($L,param.$L != null ? param.$L.getTime() : 0)", FIELD_POSTFIX + column.name.toUpperCase(), column.element.getSimpleName(), column.element.getSimpleName());
             } else if (elementType.equals(BigDecimal.class.getCanonicalName())) {
@@ -139,6 +143,9 @@ public class TableGenerator {
                 builder.addStatement("values.put($L,param.$L ? 1:0)", FIELD_POSTFIX + column.name.toUpperCase(), column.element.getSimpleName());
             }else{
                 builder.addStatement("values.put($L, param.$L)", FIELD_POSTFIX + column.name.toUpperCase(), column.element.getSimpleName());
+            }
+            if(column.primary){
+                builder.endControlFlow();
             }
         }
         builder.addStatement("return values");

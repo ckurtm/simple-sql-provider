@@ -53,7 +53,7 @@ public class SimpleSQLProviderTest extends ProviderTestCase2<SimpleSQLProvider> 
 
     public void testParentInsert() throws Exception {
         for (Parent parent : parents) {
-            Uri uri = resolver.insert(ParentTable.CONTENT_URI, ParentTable.getContentValues(parent));
+            Uri uri = resolver.insert(ParentTable.CONTENT_URI, ParentTable.getContentValues(parent,false));
             Log.d(TAG,"[]+ " + uri);
             assertNotNull(uri);
         }
@@ -62,7 +62,7 @@ public class SimpleSQLProviderTest extends ProviderTestCase2<SimpleSQLProvider> 
 
     public void testPersonInsert() throws Exception {
         for (Person person : persons) {
-            Uri uri = resolver.insert(PersonTable.CONTENT_URI, PersonTable.getContentValues(person));
+            Uri uri = resolver.insert(PersonTable.CONTENT_URI, PersonTable.getContentValues(person,false));
             Log.d(TAG,"[]+ " + uri);
             assertNotNull(uri);
         }
@@ -112,9 +112,9 @@ public class SimpleSQLProviderTest extends ProviderTestCase2<SimpleSQLProvider> 
     public void testParentUpdate() throws Exception {
         Parent oldParent = parents[0];
         int oldId = oldParent.parentId;
-        database.insertOrThrow(ParentTable.TABLE_NAME, null, ParentTable.getContentValues(oldParent));
+        database.insertOrThrow(ParentTable.TABLE_NAME, null, ParentTable.getContentValues(oldParent,false));
         oldParent.parentId = -1;
-        int updated = resolver.update(ParentTable.CONTENT_URI, ParentTable.getContentValues(oldParent), ParentTable.FIELD_PID + "=?", new String[]{String.valueOf(oldId)});
+        int updated = resolver.update(ParentTable.CONTENT_URI, ParentTable.getContentValues(oldParent,false), ParentTable.FIELD_PID + "=?", new String[]{String.valueOf(oldId)});
         assertEquals(1, updated);
         Cursor cursor = resolver.query(ParentTable.CONTENT_URI, null, null, null, ParentTable.FIELD_PID + " ASC");
         assertNotNull(cursor);
@@ -128,9 +128,9 @@ public class SimpleSQLProviderTest extends ProviderTestCase2<SimpleSQLProvider> 
     public void testPersonUpdate() throws Exception {
         Person oldPerson = persons[0];
         int oldId = oldPerson.id;
-        database.insertOrThrow(PersonTable.TABLE_NAME, null, PersonTable.getContentValues(oldPerson));
+        database.insertOrThrow(PersonTable.TABLE_NAME, null, PersonTable.getContentValues(oldPerson,false));
         oldPerson.id = -1;
-        int updated = resolver.update(PersonTable.CONTENT_URI, PersonTable.getContentValues(oldPerson), PersonTable.FIELD_ID + "=?", new String[]{String.valueOf(oldId)});
+        int updated = resolver.update(PersonTable.CONTENT_URI, PersonTable.getContentValues(oldPerson,false), PersonTable.FIELD_ID + "=?", new String[]{String.valueOf(oldId)});
         assertEquals(1, updated);
         Cursor cursor = resolver.query(PersonTable.CONTENT_URI, null, null, null, PersonTable.FIELD_ID + " ASC");
         assertNotNull(cursor);
@@ -142,13 +142,13 @@ public class SimpleSQLProviderTest extends ProviderTestCase2<SimpleSQLProvider> 
 
     private void insertParentData() {
         for (Parent parent : parents) {
-            database.insertOrThrow(ParentTable.TABLE_NAME, null, ParentTable.getContentValues(parent));
+            database.insertOrThrow(ParentTable.TABLE_NAME, null, ParentTable.getContentValues(parent,false));
         }
     }
 
     private void insertPersonData() {
         for (Person person : persons) {
-            database.insertOrThrow(PersonTable.TABLE_NAME, null, PersonTable.getContentValues(person));
+            database.insertOrThrow(PersonTable.TABLE_NAME, null, PersonTable.getContentValues(person,false));
         }
     }
 

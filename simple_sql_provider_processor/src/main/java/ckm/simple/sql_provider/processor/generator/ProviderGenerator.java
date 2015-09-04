@@ -354,8 +354,6 @@ public class ProviderGenerator {
     }
 
 
-
-
     private MethodSpec getReset(){
         MethodSpec.Builder builder = MethodSpec.methodBuilder("reset")
                 .addModifiers(PUBLIC)
@@ -370,8 +368,6 @@ public class ProviderGenerator {
         builder.returns(void.class);
         return  builder.build();
     }
-
-
 
     private MethodSpec getDatabaseHelper(){
         return MethodSpec.methodBuilder("getDatabaseHelper")
