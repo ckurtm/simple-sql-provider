@@ -65,14 +65,14 @@ public class DatabaseGenerator {
                 .initializer("$S", provider.name + CLASS_PREFIX)
                 .build();
 
-        FieldSpec databaseName = FieldSpec.builder(String.class, "DATABASE_NAME")
-                .addModifiers(PUBLIC, STATIC, FINAL)
-                .initializer("$S",provider.database)
+        FieldSpec databaseName = FieldSpec.builder(String.class, "database_name")
+                .addModifiers(PRIVATE)
+//                .initializer("$S",provider.database)
                 .build();
 
-        FieldSpec databaseVersion = FieldSpec.builder(int.class, "DATABASE_VERSION")
-                .addModifiers(PUBLIC, STATIC, FINAL)
-                .initializer("$L", provider.version)
+        FieldSpec databaseVersion = FieldSpec.builder(int.class, "database_version")
+                .addModifiers(PRIVATE)
+//                .initializer("$L", provider.version)
                 .build();
 
         FieldSpec providerConfig = FieldSpec.builder(ProviderConfig.class, "config")
@@ -87,10 +87,14 @@ public class DatabaseGenerator {
         MethodSpec constructor = MethodSpec.constructorBuilder()
                 .addModifiers(PUBLIC)
                 .addParameter(ProviderConfig.class, "config")
-                .addParameter(Helper.CONTEXT,"context")
-                .addStatement("super(context,DATABASE_NAME,null,DATABASE_VERSION)")
+                .addParameter(Helper.CONTEXT, "context")
+                .addParameter(String.class, "database_name")
+                .addParameter(int.class, "database_version")
+                .addStatement("super(context,database_name,null,database_version)")
                 .addStatement("this.config = config")
                 .addStatement("this.context = context")
+                .addStatement("this.database_name = database_name")
+                .addStatement("this.database_version = database_version")
                 .build();
 
 
@@ -106,11 +110,31 @@ public class DatabaseGenerator {
                 .addMethod(getOnCreate())
                 .addMethod(getOnUpgrade())
                 .addMethod(getReadAndExecuteSQLScript())
-                .addMethod(getExecuteSQLScript());
+                .addMethod(getExecuteSQLScript())
+                .addMethod(getDatabaseName())
+                .addMethod(getDatabaseVersion());
+
         return builder.build();
     }
 
 
+    private MethodSpec getDatabaseName(){
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("getDatabaseName")
+                .addModifiers(PUBLIC)
+                .addStatement("return database_name")
+                .returns(String.class);
+        return builder.build();
+    }
+
+
+
+    private MethodSpec getDatabaseVersion(){
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("getDatabaseVersion")
+                .addModifiers(PUBLIC)
+                .addStatement("return database_version")
+                .returns(int.class);
+        return builder.build();
+    }
 
     private MethodSpec getOnCreate(){
         MethodSpec.Builder builder = MethodSpec.methodBuilder("onCreate")

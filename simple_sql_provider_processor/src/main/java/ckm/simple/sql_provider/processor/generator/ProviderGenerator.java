@@ -124,7 +124,8 @@ public class ProviderGenerator {
                 .addMethod(getDelete())
                 .addMethod(getUpdate())
                 .addMethod(getNotifyUri())
-                .addMethod(getDatabaseHelper());
+                .addMethod(getDatabaseHelper())
+                .addMethod(getReset());
         return builder.build();
 
     }
@@ -149,7 +150,7 @@ public class ProviderGenerator {
                 .addAnnotation(Override.class)
                 .returns(boolean.class)
                 .addModifiers(PUBLIC)
-                .addStatement("databaseHelper = new $T(new $T(), getContext())", DATABASE_HELPER_CLASS, provider.configClass)
+                .addStatement("databaseHelper = new $T(new $T(), getContext(),$S,$L)", DATABASE_HELPER_CLASS, provider.configClass,provider.database,provider.version)
                 .addStatement("return true")
                 .build();
     }
@@ -248,7 +249,7 @@ public class ProviderGenerator {
                 .addStatement("notifyUri(noteUri)")
                 .addStatement("return noteUri")
                 .endControlFlow()
-                .addStatement("throw new $T(\"Failed to insert row into \" + uri)",SQLITE_EXCEPTION);
+                .addStatement("throw new $T(\"Failed to insert row into \" + uri)", SQLITE_EXCEPTION);
         return  builder.build();
 
     }
@@ -351,6 +352,25 @@ public class ProviderGenerator {
                 .endControlFlow()
                 .build();
     }
+
+
+
+
+    private MethodSpec getReset(){
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("reset")
+                .addModifiers(PUBLIC)
+                .addParameter(String.class, "database_name")
+                .addParameter(int.class, "database_version")
+                .addStatement("databaseHelper = new $T(new $T(), getContext(),database_name,database_version)", DATABASE_HELPER_CLASS, provider.configClass);
+        for (int i = 0, j = tables.size(); i < j; i++) {
+            Table table = tables.get(i);
+            ClassName tableClass = ClassName.get(table.clazz.packageName(), Helper.capitalize(table.name) + TableGenerator.CLASS_PREFIX);
+            builder.addStatement("notifyUri($T.CONTENT_URI)", tableClass);
+        }
+        builder.returns(void.class);
+        return  builder.build();
+    }
+
 
 
     private MethodSpec getDatabaseHelper(){
