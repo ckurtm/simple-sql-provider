@@ -1,0 +1,7 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="screen_padding">16dp</dimen>
+    <dimen name="default_padding">2dp</dimen>
+    <dimen name="progress_bar">30dp</dimen>
+
+</resources>

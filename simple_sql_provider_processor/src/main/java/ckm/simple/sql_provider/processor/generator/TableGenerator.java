@@ -112,6 +112,7 @@ public class TableGenerator {
         builder.addMethod(getContentValues());
         builder.addMethod(getValue());
         builder.addMethod(getValues());
+        builder.addMethod(getContentProvider());
         return builder.build();
     }
 
@@ -203,6 +204,24 @@ public class TableGenerator {
                 .addStatement("cursor.close()")
                 .endControlFlow()
                 .addStatement("return items");
+        return builder.build();
+    }
+
+
+    private MethodSpec getContentProvider() {
+        ClassName PROVIDER_CLASS = ClassName.get(provider.clazz.packageName(), Helper.capitalize(provider.name));
+        ClassName PROVIDER_CLIENT = ClassName.get("android.content", "ContentProviderClient");
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("getContentProvider")
+                .addModifiers(PUBLIC, STATIC)
+                .addParameter(Helper.CONTEXT, "context")
+                .returns(PROVIDER_CLASS)
+                .addStatement("$T client = context.getContentResolver().acquireContentProviderClient($T.AUTHORITY)", PROVIDER_CLIENT, PROVIDER_CLASS)
+                .beginControlFlow("if(client != null)")
+                .addStatement("$T contentProvider = client.getLocalContentProvider()", Helper.CONTENT_PROVIDER)
+                .addStatement("client.release()")
+                .addStatement("return ($T) contentProvider",PROVIDER_CLASS)
+                .endControlFlow()
+                .addStatement("return null");
         return builder.build();
     }
 

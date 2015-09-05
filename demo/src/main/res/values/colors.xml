@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="theme_color">#00ddff</color>
+    <color name="main">#ff00ddff</color>
+    <color name="list_item_disabled">#20c0c0c0</color>
+    <color name="list_item_selected">#4000ddff</color>
+    <color name="list_item_default">@android:color/transparent</color>
+    <color name="list_dialog_divider">#40c0c0c0</color>
+    <color name="divider">#c0c0c0</color>
+</resources>

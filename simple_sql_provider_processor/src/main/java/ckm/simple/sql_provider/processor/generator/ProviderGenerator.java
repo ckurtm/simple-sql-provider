@@ -125,7 +125,8 @@ public class ProviderGenerator {
                 .addMethod(getUpdate())
                 .addMethod(getNotifyUri())
                 .addMethod(getDatabaseHelper())
-                .addMethod(getReset());
+                .addMethod(getReset1())
+                .addMethod(getReset2());
         return builder.build();
 
     }
@@ -150,7 +151,7 @@ public class ProviderGenerator {
                 .addAnnotation(Override.class)
                 .returns(boolean.class)
                 .addModifiers(PUBLIC)
-                .addStatement("databaseHelper = new $T(new $T(), getContext(),$S,$L)", DATABASE_HELPER_CLASS, provider.configClass,provider.database,provider.version)
+                .addStatement("databaseHelper = new $T(new $T(), getContext(),$S,$L)", DATABASE_HELPER_CLASS, provider.configClass, provider.database, provider.version)
                 .addStatement("return true")
                 .build();
     }
@@ -354,12 +355,27 @@ public class ProviderGenerator {
     }
 
 
-    private MethodSpec getReset(){
+    private MethodSpec getReset1(){
         MethodSpec.Builder builder = MethodSpec.methodBuilder("reset")
                 .addModifiers(PUBLIC)
                 .addParameter(String.class, "database_name")
                 .addParameter(int.class, "database_version")
                 .addStatement("databaseHelper = new $T(new $T(), getContext(),database_name,database_version)", DATABASE_HELPER_CLASS, provider.configClass);
+        for (int i = 0, j = tables.size(); i < j; i++) {
+            Table table = tables.get(i);
+            ClassName tableClass = ClassName.get(table.clazz.packageName(), Helper.capitalize(table.name) + TableGenerator.CLASS_PREFIX);
+            builder.addStatement("notifyUri($T.CONTENT_URI)", tableClass);
+        }
+        builder.returns(void.class);
+        return  builder.build();
+    }
+
+
+    private MethodSpec getReset2(){
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("reset")
+                .addModifiers(PUBLIC)
+                .addParameter(String.class, "database_name")
+                .addStatement("databaseHelper = new $T(new $T(), getContext(),database_name,databaseHelper.getDatabaseVersion())", DATABASE_HELPER_CLASS, provider.configClass);
         for (int i = 0, j = tables.size(); i < j; i++) {
             Table table = tables.get(i);
             ClassName tableClass = ClassName.get(table.clazz.packageName(), Helper.capitalize(table.name) + TableGenerator.CLASS_PREFIX);

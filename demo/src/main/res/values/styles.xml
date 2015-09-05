@@ -1,0 +1,41 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:actionBarStyle">@style/TodoActionBar</item>
+        <item name="android:actionBarTabTextStyle">@style/TodoActionBarTabText</item>
+        <item name="android:actionMenuTextColor">@android:color/black</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/checkbox_theme</item>
+
+    </style>
+
+    <style name="TodoActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/main</item>
+        <item name="android:titleTextStyle">@style/TodoActionBarTitleText</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="TodoActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <!-- ActionBar tabs text styles -->
+    <style name="TodoActionBarTabText" parent="@android:style/Widget.Holo.ActionBar.TabText">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+
+    <style name="DialogAnim">
+        <item name="@android:windowEnterAnimation">@anim/show_dialog</item>
+        <item name="@android:windowExitAnimation">@anim/hide_dialog</item>
+    </style>
+
+    <style name="SaveDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnim</item>
+    </style>
+
+
+</resources>

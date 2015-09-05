@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/simple_sql_demo.iml" filepath="$PROJECT_DIR$/simple_sql_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simple-sql-provider.iml" filepath="$PROJECT_DIR$/simple-sql-provider.iml" />
       <module fileurl="file://$PROJECT_DIR$/simple_sql_provider_annotation/simple_sql_provider_annotation.iml" filepath="$PROJECT_DIR$/simple_sql_provider_annotation/simple_sql_provider_annotation.iml" />
       <module fileurl="file://$PROJECT_DIR$/simple_sql_provider_processor/simple_sql_provider_processor.iml" filepath="$PROJECT_DIR$/simple_sql_provider_processor/simple_sql_provider_processor.iml" />
     </modules>

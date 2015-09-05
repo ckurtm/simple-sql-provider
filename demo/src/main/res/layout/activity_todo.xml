@@ -1,0 +1,141 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Todo"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/todo_list_top"
+        android:background="#60c0c0c0"
+        android:padding="@dimen/screen_padding">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Light"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/database" />
+
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/todo_list_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:textColor="@android:color/black"
+            android:paddingBottom="@dimen/default_padding" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:paddingTop="@dimen/default_padding"
+            android:layout_marginTop="@dimen/default_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black"
+            android:text="@string/todo_list_progress"
+            android:id="@+id/textView" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <view
+                class="mbanje.kurt.todo.widget.ProgressView"
+                app:barColor="@color/theme_color"
+                android:background="#40c0c0c0"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/progress_bar"
+                android:id="@+id/todo_list_progress"
+                android:layout_toLeftOf="@+id/todo_list_percent" />
+
+            <TextView
+                android:paddingLeft="@dimen/default_padding"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/todo_list_percent" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/todo_list_top"
+        android:text="@string/todo_list_sub_header"
+        android:paddingTop="@dimen/default_padding"
+        android:paddingLeft="@dimen/screen_padding"
+        android:paddingRight="@dimen/screen_padding"
+        android:paddingBottom="@dimen/default_padding"
+        android:id="@+id/to_list_todo"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_below="@+id/to_list_todo"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/to_list_divider1"
+        android:background="@color/divider" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/todo_list_items"
+        android:layout_below="@+id/to_list_divider1"
+        android:layout_above="@+id/todo_list_footer"
+        android:divider="@color/list_dialog_divider"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_selector"
+
+        />
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/todo_list_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/screen_padding"
+        android:paddingBottom="@dimen/screen_padding">
+
+        <view
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            class="android.support.v7.widget.SwitchCompat"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/todo_switch_db"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/screen_padding" />
+
+        <ImageView
+            style="?android:attr/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter"
+            android:text="@string/todo_list_add"
+            android:background="@drawable/add_button"
+            android:id="@+id/todo_list_add" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
