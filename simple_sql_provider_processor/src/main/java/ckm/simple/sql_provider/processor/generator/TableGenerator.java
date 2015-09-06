@@ -154,12 +154,16 @@ public class TableGenerator {
     }
 
 
+
     private MethodSpec getRow(){
         MethodSpec.Builder builder = MethodSpec.methodBuilder("getRow")
                 .addModifiers(PUBLIC, STATIC)
                 .addParameter(Helper.CURSOR, "cursor")
                 .addParameter(boolean.class, "closeCursor")
                 .returns(table.clazz)
+                .beginControlFlow("if(cursor.isBeforeFirst())")
+                .addStatement("cursor.moveToFirst()")
+                .endControlFlow()
                 .addStatement("$T param = new $T()", table.clazz, table.clazz);
 
         for (int i = 0,j=table.columns.size(); i < j; i++) {
