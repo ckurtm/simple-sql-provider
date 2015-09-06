@@ -110,8 +110,8 @@ public class TableGenerator {
 
         builder.addField(create_field);
         builder.addMethod(getContentValues());
-        builder.addMethod(getValue());
-        builder.addMethod(getValues());
+        builder.addMethod(getRow());
+        builder.addMethod(getRows());
         builder.addMethod(getContentProvider());
         return builder.build();
     }
@@ -154,8 +154,8 @@ public class TableGenerator {
     }
 
 
-    private MethodSpec getValue(){
-        MethodSpec.Builder builder = MethodSpec.methodBuilder("getValue")
+    private MethodSpec getRow(){
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("getRow")
                 .addModifiers(PUBLIC, STATIC)
                 .addParameter(Helper.CURSOR, "cursor")
                 .addParameter(boolean.class, "closeCursor")
@@ -187,9 +187,9 @@ public class TableGenerator {
     }
 
 
-    private MethodSpec getValues() {
+    private MethodSpec getRows() {
         TypeName listOfTableType = ParameterizedTypeName.get(Helper.LIST, table.clazz);
-        MethodSpec.Builder builder = MethodSpec.methodBuilder("getValues")
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("getRows")
                 .addModifiers(PUBLIC, STATIC)
                 .addParameter(Helper.CURSOR, "cursor")
                 .addParameter(boolean.class, "closeCursor")
@@ -197,7 +197,7 @@ public class TableGenerator {
                 .addStatement("$T items = new $T()", listOfTableType, Helper.ARRAYLIST)
                 .addStatement("cursor.moveToPosition(-1)")
                 .beginControlFlow("while (cursor.moveToNext())")
-                .addStatement("$T item = getValue(cursor, false)", table.clazz)
+                .addStatement("$T item = getRow(cursor, false)", table.clazz)
                 .addStatement("items.add(item)")
                 .endControlFlow()
                 .beginControlFlow("if (closeCursor)")

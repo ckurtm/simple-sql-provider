@@ -214,7 +214,7 @@ public class TodoActivity extends ActionBarActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor != null) {
-            List<Todo> items = TodoTable.getValues(cursor, false);
+            List<Todo> items = TodoTable.getRows(cursor, false);
             Log.d(TAG,"onLoadFinished() [items:"+items.size()+"]");
             updateView(items);
         }

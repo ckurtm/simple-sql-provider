@@ -7,7 +7,7 @@
     <groupId>ckm.simple</groupId>
     <artifactId>sql-provider</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
 
     <name>simple-sql-provider</name>
 

@@ -55,13 +55,13 @@ public class TodoHelper {
     public static Todo getTodo(ContentResolver resolver, long id) {
         Cursor cursor = resolver.query(TodoTable.CONTENT_URI, null, TodoTable.FIELD__ID + "=?", new String[]{String.valueOf(id)}, null);
         cursor.moveToFirst();
-        return TodoTable.getValue(cursor, true);
+        return TodoTable.getRow(cursor, true);
     }
 
     public static Todo getTodo(ContentResolver resolver, String label) {
         Cursor cursor = resolver.query(TodoTable.CONTENT_URI, null, TodoTable.FIELD_LABEL + "=?", new String[]{label}, null);
         cursor.moveToFirst();
-        return TodoTable.getValue(cursor, true);
+        return TodoTable.getRow(cursor, true);
     }
 
     public static int updateTodo(ContentResolver resolver, Todo item) {
