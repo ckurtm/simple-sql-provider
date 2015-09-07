@@ -305,14 +305,14 @@ public class TodoActivity extends ActionBarActivity implements LoaderManager.Loa
     private void updateDbFile(String file) {
         Settings settings = new Settings(this);
         settings.setString(Settings.PREF_DATABASE, file);
-        TodoProvider provider = TodoTable.getContentProvider(this);
+        TodoProvider provider = TodoProvider.getContentProvider(this);
         if (provider != null) {
             provider.reset(file);
         }
     }
 
     private String getDatabaseName() {
-        TodoProvider provider = TodoTable.getContentProvider(this);
+        TodoProvider provider = TodoProvider.getContentProvider(this);
         if (provider != null) {
             return provider.getDatabaseHelper().getDatabaseName();
         }

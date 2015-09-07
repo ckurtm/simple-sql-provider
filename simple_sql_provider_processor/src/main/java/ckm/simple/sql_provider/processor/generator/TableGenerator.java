@@ -11,7 +11,9 @@ import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
@@ -77,24 +79,41 @@ public class TableGenerator {
                 .build();
 
 
+        List<Object> args = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("$S + ").append("$L + $S + \n");
+        args.add("CREATE TABLE ");
+        args.add(TABLE_NAME);
+        args.add("(");
 
-        StringBuilder sql = new StringBuilder(" CREATE TABLE ").append(table.name).append(" (");
         for (int i = 0,j=table.columns.size(); i < j; i++) {
             Column col = table.columns.get(i);
-            sql.append(col.name).append(" ").append(Helper.getSqlType(col.element.asType()));
-            if(col.primary){
-                sql.append(" PRIMARY KEY");
+            sql.append(" $L + $S ");
+//
+            sql.append(" + ");
+            args.add(FIELD_POSTFIX + col.name.toUpperCase());
+
+            String type =  " " + Helper.getSqlType(col.element.asType());
+            if(i != j-1 && !col.primary){
+                type += ",";
             }
-            if(i != j-1){
-                sql.append(",");
+            args.add(type);
+            if(col.primary) {
+                sql.append(" $S +");
+                if(!col.autoincrement) {
+                    args.add(" PRIMARY KEY,");
+                }else{
+                    args.add(" PRIMARY KEY AUTOINCREMENT,");
+                }
             }
+
             sql.append("\n");
         }
-        sql.append(");");
 
+        sql.append("$S");
+        args.add(")");
         FieldSpec create_field = FieldSpec.builder(String.class, "CREATE")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                .initializer("$S",sql)
+                .initializer(sql.toString(),args.toArray())
                 .build();
 
         TypeSpec.Builder builder = TypeSpec.classBuilder(Helper.capitalize(table.name) + CLASS_PREFIX)

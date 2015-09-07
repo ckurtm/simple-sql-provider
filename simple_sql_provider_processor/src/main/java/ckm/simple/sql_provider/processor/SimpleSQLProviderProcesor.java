@@ -130,7 +130,7 @@ public class SimpleSQLProviderProcesor extends AbstractProcessor {
                 if (classElement.getKind() == ElementKind.FIELD) {
                     final SimpleSQLColumn columnAnnotation = classElement.getAnnotation(SimpleSQLColumn.class);
                     if (columnAnnotation != null) {
-                        Column column = new Column(columnAnnotation.primary(),columnAnnotation.value(),classElement);
+                        Column column = new Column(columnAnnotation.primary(),columnAnnotation.autoincrement(),columnAnnotation.value(),classElement);
                         if (!table.columns.contains(column)) {
                             if(helper.isValidColumType(classElement.asType())){
                                 table.columns.add(column);
