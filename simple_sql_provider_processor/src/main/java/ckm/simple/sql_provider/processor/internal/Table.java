@@ -15,14 +15,20 @@ public final class Table {
     public Element element;
     public String provider;
     public ClassName clazz;
+    public String queryKey;
+    public String query;
+
     public List<Column> columns = new ArrayList<>();
 
     @Override
     public String toString() {
         return "Table{" +
                 "name='" + name + '\'' +
+                ", element=" + element +
                 ", provider='" + provider + '\'' +
                 ", clazz=" + clazz +
+                ", queryKey='" + queryKey + '\'' +
+                ", query='" + query + '\'' +
                 ", columns=" + columns +
                 '}';
     }
@@ -40,6 +46,15 @@ public final class Table {
     public Column getPrimary(){
         for(Column column:columns){
             if(column.primary){
+                return column;
+            }
+        }
+        return null;
+    }
+
+    public Column getQueryKey(){
+        for(Column column:columns){
+            if(column.name.equalsIgnoreCase(queryKey)){
                 return column;
             }
         }

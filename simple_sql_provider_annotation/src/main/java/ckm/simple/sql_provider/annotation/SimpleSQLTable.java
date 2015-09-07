@@ -6,4 +6,8 @@ package ckm.simple.sql_provider.annotation;
 public @interface SimpleSQLTable {
     String table();
     String provider();
+    String queryKey() default NULL;
+    String query() default NULL;
+    Class<?> queryRules() default String.class;
+    String NULL = "";
 }

@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.annotation.processing.Filer;
 
+import ckm.simple.sql_provider.annotation.SimpleSQLTable;
 import ckm.simple.sql_provider.processor.Helper;
 import ckm.simple.sql_provider.processor.Messenger;
 import ckm.simple.sql_provider.processor.internal.Provider;
@@ -173,14 +174,24 @@ public class ProviderGenerator {
         for (int i = 0,j=tables.size(); i < j; i++) {
             Table table = tables.get(i);
             ClassName tableClass = ClassName.get(table.clazz.packageName(),Helper.capitalize(table.name) + TableGenerator.CLASS_PREFIX);
-            builder.addStatement(" case $L:", table.name.toUpperCase())
-                    .addStatement("   qb.setTables($T.$L)", tableClass, TableGenerator.TABLE_NAME)
-                    .addStatement("break")
-                    .addStatement(" case $L_ID:", table.name.toUpperCase())
-                    .addStatement("   qb.setTables($T.$L)", tableClass, TableGenerator.TABLE_NAME);
-            if(table.hasPrimary()) {
-                builder.addStatement("   qb.appendWhere($T.$L + \"=\" + uri.getLastPathSegment())", tableClass, TableGenerator.FIELD_POSTFIX+table.getPrimary().name.toUpperCase());
+            builder.addStatement(" case $L:", table.name.toUpperCase());
+            if(table.query.equalsIgnoreCase(SimpleSQLTable.NULL)) {
+                builder.addStatement("   qb.setTables($T.$L)", tableClass, TableGenerator.TABLE_NAME);
+            }else{
+                builder.addStatement("   qb.setTables($S)", table.query);
             }
+            builder.addStatement("break")
+                    .addStatement(" case $L_ID:", table.name.toUpperCase());
+            if(table.query.equalsIgnoreCase(SimpleSQLTable.NULL)) {
+                builder.addStatement("   qb.setTables($T.$L)", tableClass, TableGenerator.TABLE_NAME);
+                if(table.hasPrimary()) {
+                    builder.addStatement("   qb.appendWhere($T.$L + \"=\" + uri.getLastPathSegment())", tableClass, TableGenerator.FIELD_POSTFIX+table.getPrimary().name.toUpperCase());
+                }
+            }else{
+                builder.addStatement("   qb.setTables($S)", table.query);
+            }
+
+
             builder.addStatement("break");
         }
 
@@ -279,9 +290,13 @@ public class ProviderGenerator {
                     .addStatement("   count = db.delete($T.$L,where,whereArgs)", tableClass, TableGenerator.TABLE_NAME)
                     .addStatement("break")
                     .addStatement(" case $L_ID:", table.name.toUpperCase());
-            if (table.hasPrimary()) {
-                builder.addStatement("   finalWhere = $T.$L + \" = \" + uri.getLastPathSegment()", tableClass, TableGenerator.FIELD_POSTFIX + table.getPrimary().name.toUpperCase())
-                        .beginControlFlow("if (where != null && !$T.isEmpty(finalWhere)) ", TEXT_UTILS)
+            if (table.hasPrimary() || !table.queryKey.equals("")) {
+                if(table.queryKey.equals("")) {
+                    builder.addStatement("   finalWhere = $T.$L + \" = \" + uri.getLastPathSegment()", tableClass, TableGenerator.FIELD_POSTFIX + table.getPrimary().name.toUpperCase());
+                }else{
+                    builder.addStatement("   finalWhere = $T.$L + \" = \" + uri.getLastPathSegment()", tableClass, TableGenerator.FIELD_POSTFIX + table.getQueryKey().name.toUpperCase());
+                }
+                builder.beginControlFlow("if (where != null && !$T.isEmpty(finalWhere)) ", TEXT_UTILS)
                         .addStatement("finalWhere = finalWhere + \" AND \" + where")
                         .endControlFlow()
                         .addStatement(" count = db.delete($T.$L,finalWhere,whereArgs)", tableClass, TableGenerator.TABLE_NAME);
@@ -321,9 +336,13 @@ public class ProviderGenerator {
                     .addStatement("   count = db.update($T.$L,values,where,whereArgs)", tableClass, TableGenerator.TABLE_NAME)
                     .addStatement("break")
                     .addStatement(" case $L_ID:", table.name.toUpperCase());
-            if (table.hasPrimary()) {
-                builder.addStatement("   finalWhere = $T.$L + \" = \" + uri.getLastPathSegment()", tableClass, TableGenerator.FIELD_POSTFIX + table.getPrimary().name.toUpperCase())
-                        .beginControlFlow("if (where != null && !$T.isEmpty(finalWhere)) ", TEXT_UTILS)
+            if (table.hasPrimary() || !table.queryKey.equals("")) {
+                if(table.queryKey.equals("")) {
+                    builder.addStatement("   finalWhere = $T.$L + \" = \" + uri.getLastPathSegment()", tableClass, TableGenerator.FIELD_POSTFIX + table.getPrimary().name.toUpperCase());
+                }else{
+                    builder.addStatement("   finalWhere = $T.$L + \" = \" + uri.getLastPathSegment()", tableClass, TableGenerator.FIELD_POSTFIX + table.getQueryKey().name.toUpperCase());
+                }
+                builder.beginControlFlow("if (where != null && !$T.isEmpty(finalWhere)) ", TEXT_UTILS)
                         .addStatement("finalWhere = finalWhere + \" AND \" + where")
                         .endControlFlow()
                         .addStatement(" count = db.update($T.$L,values,finalWhere,whereArgs)", tableClass, TableGenerator.TABLE_NAME);

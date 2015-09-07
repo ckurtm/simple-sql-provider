@@ -122,7 +122,9 @@ public class SimpleSQLProviderProcesor extends AbstractProcessor {
             Table table = new Table();
             table.element = element;
             table.name = tableAnnotation.table();
+            table.queryKey = tableAnnotation.queryKey();
             table.provider = tableAnnotation.provider();
+            table.query = tableAnnotation.query();
             String packageName = helper.getPackageName(elementUtils, typeElement);
             table.clazz = ClassName.get(packageName,typeElement.getSimpleName().toString());
             boolean hasValidConstructor = false;
