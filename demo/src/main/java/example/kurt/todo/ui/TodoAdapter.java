@@ -1,4 +1,4 @@
-package mbanje.kurt.todo.ui;
+package example.kurt.todo.ui;
 
 import android.content.Context;
 import android.util.SparseBooleanArray;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import mbanje.kurt.todo.R;
-import mbanje.kurt.todo.Todo;
-import mbanje.kurt.todo.provider.TodoHelper;
+import example.kurt.todo.R;
+import example.kurt.todo.Todo;
+import example.kurt.todo.provider.TodoHelper;
 
 /**
  * Created by kurt on 2014/07/18.

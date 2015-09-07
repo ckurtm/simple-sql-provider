@@ -1,4 +1,4 @@
-package mbanje.kurt.todo.utils;
+package example.kurt.todo.utils;
 
 import android.annotation.TargetApi;
 import android.content.Context;

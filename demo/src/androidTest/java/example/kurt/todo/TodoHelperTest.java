@@ -17,7 +17,7 @@
  *   https://github.com/ckurtm/DroidProvider
  */
 
-package mbanje.kurt.todo;
+package example.kurt.todo;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -27,7 +27,7 @@ import android.test.ProviderTestCase2;
 
 import java.io.IOException;
 
-import mbanje.kurt.todo.provider.TodoHelper;
+import example.kurt.todo.provider.TodoHelper;
 
 /**
  * Created by kurt on 2014/07/19.
@@ -37,7 +37,7 @@ public class TodoHelperTest extends ProviderTestCase2<TodoProvider> {
     private ContentResolver resolver;
 
     public TodoHelperTest() {
-        super(TodoProvider.class, "mbanje.kurt.todo.debug");
+        super(TodoProvider.class, "example.kurt.todo.debug");
     }
 
     @Override

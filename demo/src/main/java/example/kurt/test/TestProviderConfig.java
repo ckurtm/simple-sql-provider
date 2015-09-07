@@ -1,10 +1,10 @@
-package mbanje.kurt.test;
+package example.kurt.test;
 
 
 import ckm.simple.sql_provider.UpgradeScript;
 import ckm.simple.sql_provider.annotation.ProviderConfig;
 import ckm.simple.sql_provider.annotation.SimpleSQLConfig;
-import mbanje.kurt.App;
+import example.kurt.App;
 
 /**
  * Created by kurt on 2015/09/02.

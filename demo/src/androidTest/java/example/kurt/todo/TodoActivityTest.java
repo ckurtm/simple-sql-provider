@@ -17,7 +17,7 @@
  *   https://github.com/ckurtm/DroidProvider
  */
 
-package mbanje.kurt.todo;
+package example.kurt.todo;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
@@ -27,11 +27,11 @@ import android.widget.ListView;
 
 import com.robotium.solo.Solo;
 
-import mbanje.kurt.todo.helper.ListHelper;
-import mbanje.kurt.todo.provider.TodoHelper;
-import mbanje.kurt.todo.ui.TodoActivity;
-import mbanje.kurt.todo.ui.TodoAdapter;
-import mbanje.kurt.todo.widget.ProgressView;
+import example.kurt.todo.helper.ListHelper;
+import example.kurt.todo.provider.TodoHelper;
+import example.kurt.todo.ui.TodoActivity;
+import example.kurt.todo.ui.TodoAdapter;
+import example.kurt.todo.widget.ProgressView;
 
 /**
  * Created by kurt on 2014/07/19.

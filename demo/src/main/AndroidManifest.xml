@@ -1,6 +1,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mbanje.kurt.todo">
+    package="example.kurt.todo">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         >
 
         <activity
-            android:name=".ui.TodoActivity"
+            android:name="example.kurt.todo.ui.TodoActivity"
             android:label="@string/todo_list_action_title"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -21,14 +21,14 @@
 
         <provider
             android:authorities="@string/authority_todo"
-            android:name=".TodoProvider"
+            android:name="example.kurt.todo.TodoProvider"
             android:exported="false"
             />
 
         <provider
             android:exported="false"
             android:authorities="@string/authority_test"
-            android:name="mbanje.kurt.test.TestProvider"/>
+            android:name="example.kurt.test.TestProvider"/>
     </application>
 
 </manifest>

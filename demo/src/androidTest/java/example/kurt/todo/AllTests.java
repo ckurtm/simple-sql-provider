@@ -1,4 +1,4 @@
-package mbanje.kurt.todo;
+package example.kurt.todo;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

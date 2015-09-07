@@ -17,7 +17,7 @@
  *   https://github.com/ckurtm/DroidProvider
  */
 
-package mbanje.kurt.todo.provider;
+package example.kurt.todo.provider;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -25,8 +25,8 @@ import android.net.Uri;
 import android.util.Log;
 
 
-import mbanje.kurt.todo.Todo;
-import mbanje.kurt.todo.TodoTable;
+import example.kurt.todo.Todo;
+import example.kurt.todo.TodoTable;
 
 /**
  * Created by kurt on 2014/07/19.

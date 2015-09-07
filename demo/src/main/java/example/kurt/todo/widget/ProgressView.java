@@ -17,7 +17,7 @@
  *   https://github.com/ckurtm/DroidProvider
  */
 
-package mbanje.kurt.todo.widget;
+package example.kurt.todo.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -27,10 +27,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
-import mbanje.kurt.todo.R;
+import example.kurt.todo.R;
 
 /**
  * Created by kurt on 2014/07/21.
