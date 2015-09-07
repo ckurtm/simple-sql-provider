@@ -6,4 +6,5 @@ package ckm.simple.sql_provider.annotation;
 public @interface SimpleSQLColumn {
     String value();
     boolean primary() default false;
+    boolean autoincrement() default false;
 }

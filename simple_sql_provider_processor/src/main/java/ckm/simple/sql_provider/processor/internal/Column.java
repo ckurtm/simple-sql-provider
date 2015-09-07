@@ -2,6 +2,9 @@ package ckm.simple.sql_provider.processor.internal;
 
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+
+import ckm.simple.sql_provider.processor.Helper;
 
 /**
  * Created by kurt on 03 09 2015 .
@@ -39,5 +42,9 @@ public final class Column {
                 ", field=" + element.getSimpleName() +
                 ", primary=" + primary +
                 '}';
+    }
+
+    public boolean isPrivate(){
+            return !Helper.isPublic(element);
     }
 }

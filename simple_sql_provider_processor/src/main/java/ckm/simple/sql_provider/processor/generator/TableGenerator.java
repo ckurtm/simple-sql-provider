@@ -112,7 +112,6 @@ public class TableGenerator {
         builder.addMethod(getContentValues());
         builder.addMethod(getRow());
         builder.addMethod(getRows());
-        builder.addMethod(getContentProvider());
         return builder.build();
     }
 
@@ -133,17 +132,42 @@ public class TableGenerator {
                 .addStatement("$T values = new $T()", Helper.CONTENT_VALUES, Helper.CONTENT_VALUES);
         for (Column column : table.columns) {
             String elementType = column.element.asType().toString();
+            String getterMethod = Helper.getGetter(column.element.getSimpleName().toString());
+            String colname = column.element.getSimpleName().toString();
+
             if(column.primary){
                 builder.beginControlFlow("if(includePrimary)");
             }
             if (elementType.equals(Date.class.getCanonicalName())) {
-                builder.addStatement("values.put($L,param.$L != null ? param.$L.getTime() : 0)", FIELD_POSTFIX + column.name.toUpperCase(), column.element.getSimpleName(), column.element.getSimpleName());
+                if (column.isPrivate()) {
+                    builder.addStatement("values.put($L,param.$L != null ? param.$L.getTime() : 0)", FIELD_POSTFIX + column.name.toUpperCase(), getterMethod, getterMethod);
+                } else {
+                    builder.addStatement("values.put($L,param.$L != null ? param.$L.getTime() : 0)", FIELD_POSTFIX + column.name.toUpperCase(), colname, colname);
+                }
+            } else if (elementType.equals(Helper.JODATIME.toString())){
+                if (column.isPrivate()) {
+                    builder.addStatement("values.put($L,param.$L != null ? param.$L.getMillis() : 0)", FIELD_POSTFIX + column.name.toUpperCase(), getterMethod, getterMethod);
+                } else {
+                    builder.addStatement("values.put($L,param.$L != null ? param.$L.getMillis() : 0)", FIELD_POSTFIX + column.name.toUpperCase(), colname, colname);
+                }
             } else if (elementType.equals(BigDecimal.class.getCanonicalName())) {
-                builder.addStatement("values.put($L,param.$L != null ? param.$L.doubleValue():0)", FIELD_POSTFIX + column.name.toUpperCase(), column.element.getSimpleName(), column.element.getSimpleName());
+                if(column.isPrivate()) {
+                    builder.addStatement("values.put($L,param.$L != null ? param.$L.doubleValue():0)", FIELD_POSTFIX + column.name.toUpperCase(), getterMethod, getterMethod);
+                }else{
+                    builder.addStatement("values.put($L,param.$L != null ? param.$L.doubleValue():0)", FIELD_POSTFIX + column.name.toUpperCase(), colname, colname);
+                }
             } else if (elementType.equals(boolean.class.getCanonicalName()) || elementType.equals(Boolean.class.getCanonicalName())) {
-                builder.addStatement("values.put($L,param.$L ? 1:0)", FIELD_POSTFIX + column.name.toUpperCase(), column.element.getSimpleName());
+                if(column.isPrivate()) {
+                    builder.addStatement("values.put($L,param.$L ? 1:0)", FIELD_POSTFIX + column.name.toUpperCase(), getterMethod);
+                }else{
+                    builder.addStatement("values.put($L,param.$L ? 1:0)", FIELD_POSTFIX + column.name.toUpperCase(), colname);
+                }
             }else{
-                builder.addStatement("values.put($L, param.$L)", FIELD_POSTFIX + column.name.toUpperCase(), column.element.getSimpleName());
+                if(column.isPrivate()) {
+                    builder.addStatement("values.put($L, param.$L)", FIELD_POSTFIX + column.name.toUpperCase(), getterMethod);
+                }else{
+                    builder.addStatement("values.put($L, param.$L)", FIELD_POSTFIX + column.name.toUpperCase(), colname);
+                }
             }
             if(column.primary){
                 builder.endControlFlow();
@@ -170,17 +194,44 @@ public class TableGenerator {
             Column column = table.columns.get(i);
             String elementType = column.element.asType().toString();
             String COL_FIELD = FIELD_POSTFIX + column.name.toUpperCase();
-            if(elementType.equals(Date.class.getCanonicalName())){
-                builder.addStatement("long p$L = cursor.get$L(cursor.getColumnIndex($L))",i, Helper.getSqlDataType(column.element.asType()),COL_FIELD);
-                builder.addStatement("param.$L = new $T(p$L)", column.element.getSimpleName(), Date.class, i);
-            } else if(elementType.equals(BigDecimal.class.getCanonicalName())) {
+            String setterMethod = Helper.getSetter(column.element.getSimpleName().toString());
+            String colname = column.element.getSimpleName().toString();
+
+            if (elementType.equals(Date.class.getCanonicalName())) {
                 builder.addStatement("long p$L = cursor.get$L(cursor.getColumnIndex($L))", i, Helper.getSqlDataType(column.element.asType()), COL_FIELD);
-                builder.addStatement("param.$L = new $T(p$L)", column.element.getSimpleName(), BigDecimal.class, i);
+                if (column.isPrivate()) {
+                    builder.addStatement("param.$L(new $T(p$L))", setterMethod, Date.class, i);
+                } else {
+                    builder.addStatement("param.$L = new $T(p$L)", colname, Date.class, i);
+                }
+            }else if(elementType.equals(Helper.JODATIME.toString())){
+                builder.addStatement("long p$L = cursor.get$L(cursor.getColumnIndex($L))", i, Helper.getSqlDataType(column.element.asType()), COL_FIELD);
+                if (column.isPrivate()) {
+                    builder.addStatement("param.$L(new $T(p$L))", setterMethod, Helper.JODATIME, i);
+                } else {
+                    builder.addStatement("param.$L = new $T(p$L)", colname, Helper.JODATIME, i);
+                }
+            }else if(elementType.equals(BigDecimal.class.getCanonicalName())) {
+                builder.addStatement("long p$L = cursor.get$L(cursor.getColumnIndex($L))", i, Helper.getSqlDataType(column.element.asType()), COL_FIELD);
+                if(column.isPrivate()) {
+                    builder.addStatement("param.$L(new $T(p$L))", setterMethod, BigDecimal.class, i);
+                }else{
+                    builder.addStatement("param.$L = new $T(p$L)", colname, BigDecimal.class, i);
+                }
             } else if (elementType.equalsIgnoreCase(Boolean.class.getCanonicalName()) || elementType.equalsIgnoreCase(boolean.class.getCanonicalName())) {
-                builder.addStatement("param.$L = cursor.get$L(cursor.getColumnIndex($L)) > 0", column.element.getSimpleName(), Helper.getSqlDataType(column.element.asType()), COL_FIELD);
+                if(column.isPrivate()) {
+                    builder.addStatement("param.$L(cursor.get$L(cursor.getColumnIndex($L)) > 0)", setterMethod, Helper.getSqlDataType(column.element.asType()), COL_FIELD);
+                }else{
+                    builder.addStatement("param.$L = cursor.get$L(cursor.getColumnIndex($L)) > 0", colname, Helper.getSqlDataType(column.element.asType()), COL_FIELD);
+                }
             }else{
-                builder.addStatement("param.$L = cursor.get$L(cursor.getColumnIndex($L))",column.element.getSimpleName(), Helper.getSqlDataType(column.element.asType()),COL_FIELD);
+                if(column.isPrivate()) {
+                    builder.addStatement("param.$L(cursor.get$L(cursor.getColumnIndex($L)))", setterMethod, Helper.getSqlDataType(column.element.asType()), COL_FIELD);
+                }else{
+                    builder.addStatement("param.$L = cursor.get$L(cursor.getColumnIndex($L))", colname, Helper.getSqlDataType(column.element.asType()), COL_FIELD);
+                }
             }
+
         }
 
         builder.beginControlFlow("if (closeCursor)");
@@ -212,22 +263,7 @@ public class TableGenerator {
     }
 
 
-    private MethodSpec getContentProvider() {
-        ClassName PROVIDER_CLASS = ClassName.get(provider.clazz.packageName(), Helper.capitalize(provider.name));
-        ClassName PROVIDER_CLIENT = ClassName.get("android.content", "ContentProviderClient");
-        MethodSpec.Builder builder = MethodSpec.methodBuilder("getContentProvider")
-                .addModifiers(PUBLIC, STATIC)
-                .addParameter(Helper.CONTEXT, "context")
-                .returns(PROVIDER_CLASS)
-                .addStatement("$T client = context.getContentResolver().acquireContentProviderClient($T.AUTHORITY)", PROVIDER_CLIENT, PROVIDER_CLASS)
-                .beginControlFlow("if(client != null)")
-                .addStatement("$T contentProvider = client.getLocalContentProvider()", Helper.CONTENT_PROVIDER)
-                .addStatement("client.release()")
-                .addStatement("return ($T) contentProvider",PROVIDER_CLASS)
-                .endControlFlow()
-                .addStatement("return null");
-        return builder.build();
-    }
+
 
 
 }
