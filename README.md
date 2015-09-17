@@ -139,4 +139,12 @@
         List<Test> testRows = TestTable.getRows(cursor,false);   
      ```
      
+     
+    5. add your provider as usual to your AndroidManifest.xml file with a matching authority as defined in ProviderConfig class
+     
+     ```xml
+         <provider
+            android:authorities="just.some.test_provider.authority"
+            android:name="example.kurt.test.TestProvider"/>   
+     ```
   
