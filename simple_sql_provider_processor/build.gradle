@@ -1,4 +1,34 @@
 apply plugin: 'java'
+apply plugin: 'com.jfrog.bintray'
+
+group = 'ckm.simple'
+version = '1.0.5'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty('bintray.user')
+    key = properties.getProperty('bintray.key')
+
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'SimpleSQLProvider'
+        userOrg = user
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/ckurtm/simple-sql-provider.git'
+        labels = ['Android', 'SQL', 'ContentProvider','SQLite']
+        publicDownloadNumbers = true
+        attributes= ['G+': ['https://plus.google.com/u/0/+KurtMbanje'], 'Twitter': ['@ckurtm']]
+        version {
+            name = '1.0.5'
+            desc = 'The Fastest Way to create a sql based ContentProvider in Android using annotations (No reflection)'
+            vcsTag = '1.0.5'
+//            attributes = ['gradle-plugin': 'ckm.simple:sql-provider-processor:1.0.5']
+        }
+    }
+}
 
 dependencies {
     compile 'com.squareup:javapoet:1.2.0'
