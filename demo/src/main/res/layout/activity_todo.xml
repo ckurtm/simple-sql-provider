@@ -59,7 +59,7 @@
             android:layout_height="wrap_content">
 
             <view
-                class="mbanje.kurt.todo.widget.ProgressView"
+                class="example.kurt.todo.widget.ProgressView"
                 app:barColor="@color/theme_color"
                 android:background="#40c0c0c0"
                 android:layout_width="match_parent"

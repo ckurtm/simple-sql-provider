@@ -1,4 +1,4 @@
-package mbanje.kurt;
+package example.kurt;
 
 import android.app.Application;
 

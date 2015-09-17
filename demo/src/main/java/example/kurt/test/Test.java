@@ -1,4 +1,4 @@
-package mbanje.kurt.test;
+package example.kurt.test;
 
 
 
@@ -7,7 +7,7 @@ import java.util.Date;
 
 import ckm.simple.sql_provider.annotation.SimpleSQLColumn;
 import ckm.simple.sql_provider.annotation.SimpleSQLTable;
-import mbanje.kurt.App;
+import example.kurt.App;
 
 /**
  * Created by kurt on 2015/09/04.

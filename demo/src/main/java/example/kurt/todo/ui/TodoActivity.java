@@ -1,4 +1,4 @@
-package mbanje.kurt.todo.ui;
+package example.kurt.todo.ui;
 
 import android.app.Dialog;
 import android.app.LoaderManager;
@@ -31,14 +31,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import mbanje.kurt.todo.R;
-import mbanje.kurt.todo.Todo;
-import mbanje.kurt.todo.TodoProvider;
-import mbanje.kurt.todo.TodoTable;
-import mbanje.kurt.todo.provider.TodoHelper;
-import mbanje.kurt.todo.utils.Settings;
-import mbanje.kurt.todo.utils.TodoUtils;
-import mbanje.kurt.todo.widget.ProgressView;
+import example.kurt.todo.R;
+import example.kurt.todo.Todo;
+import example.kurt.todo.TodoProvider;
+import example.kurt.todo.TodoTable;
+import example.kurt.todo.provider.TodoHelper;
+import example.kurt.todo.utils.Settings;
+import example.kurt.todo.utils.TodoUtils;
+import example.kurt.todo.widget.ProgressView;
 
 
 public class TodoActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -305,14 +305,14 @@ public class TodoActivity extends ActionBarActivity implements LoaderManager.Loa
     private void updateDbFile(String file) {
         Settings settings = new Settings(this);
         settings.setString(Settings.PREF_DATABASE, file);
-        TodoProvider provider = TodoTable.getContentProvider(this);
+        TodoProvider provider = TodoProvider.getContentProvider(this);
         if (provider != null) {
             provider.reset(file);
         }
     }
 
     private String getDatabaseName() {
-        TodoProvider provider = TodoTable.getContentProvider(this);
+        TodoProvider provider = TodoProvider.getContentProvider(this);
         if (provider != null) {
             return provider.getDatabaseHelper().getDatabaseName();
         }

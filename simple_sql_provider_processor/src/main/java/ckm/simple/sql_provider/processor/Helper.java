@@ -36,10 +36,10 @@ public class Helper {
     public static final ClassName ARRAYLIST = ClassName.get("java.util", "ArrayList");
     public static final ClassName CONTEXT = ClassName.get("android.content", "Context");
     public static final ClassName RESOURCES = ClassName.get("android.content.res", "Resources");
-//    public static final ClassName PROVIDER_CONFIG_INTERFACE = ClassName.get("android.content.res", "Resources");
+    public static final ClassName JODATIME = ClassName.get("org.joda.time","DateTime");
 
 
-    boolean isPublic(TypeElement annotatedClass) {
+    public static boolean isPublic(Element annotatedClass) {
         return annotatedClass.getModifiers().contains(Modifier.PUBLIC);
     }
 
@@ -59,8 +59,9 @@ public class Helper {
                 || element.toString().equals(Float.class.getCanonicalName())
                 || element.toString().equals(Double.class.getCanonicalName())
                 || element.toString().equals(Date.class.getCanonicalName())
-                || element.toString().equals(BigDecimal.class.getCanonicalName()
-        );
+                || element.toString().equals(BigDecimal.class.getCanonicalName())
+                || element.toString().equals(JODATIME.toString())
+                ;
     }
 
     public static String getSqlType(TypeMirror element){
@@ -87,7 +88,9 @@ public class Helper {
         }else if(element.toString().equals(Boolean.class.getCanonicalName())
                 || element.toString().equals(boolean.class.getCanonicalName())){
             return "INTEGER";
-        }else if(element.toString().equals(Date.class.getCanonicalName())){
+        }else if(element.toString().equals(Date.class.getCanonicalName())
+                || element.toString().equals(JODATIME.toString())
+                ){
             return "INTEGER";
         }
         return null;
@@ -115,7 +118,9 @@ public class Helper {
         }else if(element.toString().equals(Boolean.class.getCanonicalName())
                 || element.toString().equals(boolean.class.getCanonicalName())){
             return "Int";
-        } else if (element.toString().equals(Date.class.getCanonicalName())) {
+        } else if (element.toString().equals(Date.class.getCanonicalName())
+                || element.toString().equals(JODATIME.toString())
+                ) {
             return "Long";
         } else if (element.toString().equals(Boolean.class.getCanonicalName())
                 || element.toString().equals(boolean.class.getCanonicalName())) {
@@ -178,4 +183,36 @@ public class Helper {
     public static String capitalize(final String line) {
         return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
+
+
+    public static String getGetter(String variable){
+        StringBuilder builder = new StringBuilder("get");
+        if(variable.length() > 1) {
+            final char first = variable.charAt(0);
+            final char second = variable.charAt(1);
+            if (!Character.isUpperCase(variable.charAt(0)) &&
+                    first == 'm' && Character.isUpperCase(second)) {
+                   builder.append(capitalize(variable.substring(1,variable.length())));
+            }else{
+                builder.append(capitalize(variable.substring(0,variable.length())));
+            }
+        }
+        return builder.append("()").toString();
+    }
+
+    public static String getSetter(String variable){
+        StringBuilder builder = new StringBuilder("set");
+        if(variable.length() > 1) {
+            final char first = variable.charAt(0);
+            final char second = variable.charAt(1);
+            if (!Character.isUpperCase(variable.charAt(0)) &&
+                    first == 'm' && Character.isUpperCase(second)) {
+                builder.append(capitalize(variable.substring(1,variable.length())));
+            }else{
+                builder.append(capitalize(variable.substring(0,variable.length())));
+            }
+        }
+        return builder.toString();
+    }
+
 }

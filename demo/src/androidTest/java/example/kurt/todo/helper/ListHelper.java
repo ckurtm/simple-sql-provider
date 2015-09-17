@@ -17,7 +17,7 @@
  *   https://github.com/ckurtm/DroidProvider
  */
 
-package mbanje.kurt.todo.helper;
+package example.kurt.todo.helper;
 
 import android.app.Instrumentation;
 import android.view.View;

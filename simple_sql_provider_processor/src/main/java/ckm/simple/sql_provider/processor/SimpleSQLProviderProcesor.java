@@ -116,13 +116,15 @@ public class SimpleSQLProviderProcesor extends AbstractProcessor {
 //            messenger.warn(element, "----PARSE_TABLES() %s", element);
             TypeElement typeElement = (TypeElement) element;
             final SimpleSQLTable tableAnnotation = element.getAnnotation(SimpleSQLTable.class);
-            if(helper.isInterface(element.asType()) || !helper.isPublic(typeElement)){
+            if(helper.isInterface(element.asType()) || !Helper.isPublic(typeElement)){
                 messenger.error(element, "%s can only be applied public classes %s is not a valid class", tableAnnotation,element.getSimpleName());
             }
             Table table = new Table();
             table.element = element;
             table.name = tableAnnotation.table();
+            table.queryKey = tableAnnotation.queryKey();
             table.provider = tableAnnotation.provider();
+            table.query = tableAnnotation.query();
             String packageName = helper.getPackageName(elementUtils, typeElement);
             table.clazz = ClassName.get(packageName,typeElement.getSimpleName().toString());
             boolean hasValidConstructor = false;
@@ -130,12 +132,12 @@ public class SimpleSQLProviderProcesor extends AbstractProcessor {
                 if (classElement.getKind() == ElementKind.FIELD) {
                     final SimpleSQLColumn columnAnnotation = classElement.getAnnotation(SimpleSQLColumn.class);
                     if (columnAnnotation != null) {
-                        Column column = new Column(columnAnnotation.primary(),columnAnnotation.value(),classElement);
+                        Column column = new Column(columnAnnotation.primary(),columnAnnotation.autoincrement(),columnAnnotation.value(),classElement);
                         if (!table.columns.contains(column)) {
                             if(helper.isValidColumType(classElement.asType())){
                                 table.columns.add(column);
                             }else{
-                                messenger.error(classElement, "return type of %s is not currently supported for table columns", classElement);
+                                messenger.error(classElement, "return type of %s is not currently supported for table columns", classElement.asType());
                             }
                         } else {
                             messenger.error(classElement, "duplicate column name <%s> in %s [column name is not case sensitive]", columnAnnotation.value(), table.clazz);
