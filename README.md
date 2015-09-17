@@ -65,10 +65,7 @@
      
   2. Annotate your Pojo file that defines a table in the Database as below.
   
-  @SimpleSQLTable(table = "test", provider = App.TEST_PROVIDER)
-  public class Test {
-  
-    ```java
+  ```java
     @SimpleSQLTable(table = "test", provider = "TestProvider")
     public class Test {
 
