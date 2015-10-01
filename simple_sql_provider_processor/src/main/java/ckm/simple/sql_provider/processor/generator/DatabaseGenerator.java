@@ -178,7 +178,7 @@ public class DatabaseGenerator {
                 .beginControlFlow("if (config != null)")
                 .addStatement("$T[] scripts = config.getUpdateScripts()", UpgradeScript.class)
                 .beginControlFlow("for($T script:scripts)",UpgradeScript.class)
-                .beginControlFlow("if (oldVersion < script.oldVersion)")
+                .beginControlFlow("if (oldVersion < script.newVersion)")
                 .addStatement("readAndExecuteSQLScript(db, context, script.sqlScriptResource)")
                 .endControlFlow()
                 .endControlFlow()
